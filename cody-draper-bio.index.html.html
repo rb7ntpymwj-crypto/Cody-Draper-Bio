@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cody Draper | Safety & Systems Integrity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF1EF;
+    --surface: #FFFFFF;
+    --ink: #10202B;
+    --muted: #46586A;
+    --line: #0B6E6E;
+    --line-soft: #BFD0CF;
+    --accent: #0B6E6E;
+    --future: #8A5A00;
+    --future-line: #C98A12;
+    --on-accent: #FFFFFF;
+    --chip-bg: #E0EBEA;
+    --chip-ink: #0B4F4F;
+    --focus: #0B6E6E;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0C1820;
+      --surface: #13242E;
+      --ink: #E6EEF0;
+      --muted: #A9BAC4;
+      --line: #5CC4BA;
+      --line-soft: #2A4350;
+      --accent: #5CC4BA;
+      --future: #F0B84A;
+      --future-line: #F0B84A;
+      --on-accent: #08171A;
+      --chip-bg: #1B3441;
+      --chip-ink: #BDE9E4;
+      --focus: #5CC4BA;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0C1820;
+    --surface: #13242E;
+    --ink: #E6EEF0;
+    --muted: #A9BAC4;
+    --line: #5CC4BA;
+    --line-soft: #2A4350;
+    --accent: #5CC4BA;
+    --future: #F0B84A;
+    --future-line: #F0B84A;
+    --on-accent: #08171A;
+    --chip-bg: #1B3441;
+    --chip-ink: #BDE9E4;
+    --focus: #5CC4BA;
+    color-scheme: dark;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 560px; margin: 0 auto; padding: 48px 22px 56px; }
+
+  h1, h2, h3, summary .title {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  }
+  h1 { font-size: 2.75rem; line-height: 1.02; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 10px; }
+  .role { font-size: 1.1875rem; font-weight: 600; margin: 0 0 4px; }
+  .where { color: var(--muted); margin: 0 0 22px; font-size: 1rem; }
+  .lede { margin: 0 0 40px; max-width: 46ch; }
+
+  h2 { font-size: 1.125rem; font-weight: 700; margin: 0 0 18px; letter-spacing: -0.005em; }
+
+  /* The route: a pipeline running through the page. Solid = work today. Dashed = where it goes next. */
+  .route { position: relative; }
+  .stop { position: relative; padding: 0 0 18px 46px; }
+  .stop::before {
+    content: "";
+    position: absolute; left: 11px; top: 22px; bottom: -22px; width: 3px;
+    background: var(--line);
+    border-radius: 2px;
+  }
+  .stop::after {
+    content: "";
+    position: absolute; left: 3px; top: 11px; width: 19px; height: 19px;
+    border-radius: 50%;
+    background: var(--line);
+    border: 4px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--line);
+  }
+  .stop.toward::before {
+    background: repeating-linear-gradient(to bottom, var(--future-line) 0 7px, transparent 7px 14px);
+  }
+  .stop.future::before { display: none; }
+  .stop.future::after {
+    background: var(--bg);
+    border: 4px solid var(--future-line);
+    box-shadow: none;
+  }
+  .stop.future { padding-bottom: 0; }
+
+  details {
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+  }
+  .future details { border-color: var(--future-line); border-width: 2px; }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 16px;
+    min-height: 56px;
+    border-radius: 10px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary .text { flex: 1; min-width: 0; }
+  summary .title { display: block; font-size: 1.1875rem; font-weight: 700; line-height: 1.25; }
+  summary .gist { display: block; color: var(--muted); font-size: 1rem; margin-top: 3px; }
+  summary .chev {
+    flex: none; margin-top: 3px; width: 22px; height: 22px;
+    color: var(--accent);
+    transition: transform .18s ease;
+  }
+  .future summary .chev { color: var(--future); }
+  details[open] summary .chev { transform: rotate(180deg); }
+  summary:focus-visible, .btn:focus-visible, a:focus-visible {
+    outline: 3px solid var(--focus); outline-offset: 2px;
+  }
+  .body { padding: 2px 16px 16px; }
+  .body ul { margin: 0; padding-left: 1.15em; }
+  .body li { margin: 0 0 8px; }
+  .body li:last-child { margin-bottom: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; padding: 0; list-style: none; }
+  .chips li {
+    background: var(--chip-bg); color: var(--chip-ink);
+    font-weight: 600; font-size: .9375rem;
+    padding: 5px 11px; border-radius: 999px; margin: 0;
+  }
+  .body p { margin: 0 0 10px; }
+  .body p:last-child { margin-bottom: 0; }
+  .body strong { font-weight: 600; }
+
+  .next-label { color: var(--future); font-weight: 600; font-size: 1rem; margin: 0 0 6px 2px; }
+
+  .contact { margin-top: 44px; }
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    min-height: 54px; padding: 0 20px;
+    background: var(--accent); color: var(--on-accent);
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700; font-size: 1.0625rem;
+    text-decoration: none; border-radius: 10px;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn svg { width: 20px; height: 20px; }
+  .aga { color: var(--muted); font-size: .9375rem; margin: 22px 2px 0; max-width: 48ch; }
+
+  @media (min-width: 640px) {
+    main { padding-top: 72px; }
+    h1 { font-size: 3.25rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    summary .chev { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Cody Draper</h1>
+    <p class="role">Safety &amp; Systems Integrity Manager, WTG Energy</p>
+    <p class="where">Amarillo, TX</p>
+    <p class="lede">Twenty years in oil and natural gas, from surveying and field operations to running six regulated programs across 15 districts. I build, operate, and defend energy infrastructure to a standard regulators accept.</p>
+  </header>
+
+  <h2>What I run today</h2>
+  <div class="route">
+
+    <div class="stop">
+      <details>
+        <summary>
+          <span class="text">
+            <span class="title">Risk management</span>
+            <span class="gist">Rank the work by risk, then deliver it.</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <ul>
+            <li>Replaced an outside vendor tool with an in-house, risk-based replacement model. It saves about $20,000 a year and drives long-term capital planning in every district.</li>
+            <li>Deliver 5–10 miles of infrastructure replacement each year by ranking projects against the model.</li>
+            <li>Own Management of Change: approve minor changes directly and take significant ones through senior-management review with a documented risk evaluation.</li>
+            <li>Lead incident investigations and abnormal-condition reviews, from root cause through closed corrective actions.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="stop">
+      <details>
+        <summary>
+          <span class="text">
+            <span class="title">Compliance and regulatory frameworks</span>
+            <span class="gist">Six enterprise programs, kept audit-ready.</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <ul class="chips">
+            <li>Distribution Integrity</li>
+            <li>Transmission Integrity</li>
+            <li>Operator Qualification</li>
+            <li>Safety</li>
+            <li>Public Awareness</li>
+            <li>Damage Prevention</li>
+          </ul>
+          <ul>
+            <li>Primary liaison for federal and state inspections of these programs. Results: minor alleged violations, and none has ever led to a fine.</li>
+            <li>Company-wide procedure and manual revisions that keep each program ready for audit.</li>
+            <li>Report to regulators when an incident requires it.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="stop">
+      <details>
+        <summary>
+          <span class="text">
+            <span class="title">Operations across 15 districts</span>
+            <span class="gist">Capital and operations budgets above $5 million a year.</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <ul>
+            <li>Coordinate contractors, materials, and schedules across every district.</li>
+            <li>Run the full contractor procurement cycle: competitive bids, proposal evaluation, selection, and performance and budget tracking through close-out.</li>
+            <li>As Distribution Integrity Manager, delivered 8–10 projects a year and finished under budget in all but one year.</li>
+            <li>Started in the field: pipeline operator running compressor stations and emergency response, and before that a survey crew supervisor on large construction projects.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="stop toward">
+      <details>
+        <summary>
+          <span class="text">
+            <span class="title">Environmental</span>
+            <span class="gist">Measure, report, and cut emissions.</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <ul>
+            <li>Run the environmental emissions program: quantify and report all releases, and direct remediation and prevention work.</li>
+            <li>Emissions reduction plans include closed-loop valve actuators, redirecting gas before a pipeline blowdown, and Advanced Mobile Leak Detection vehicles, now in the approval stage.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="stop future">
+      <p class="next-label">Where I’m going</p>
+      <details open>
+        <summary>
+          <span class="text">
+            <span class="title">M.S. in Energy, Texas A&amp;M University</span>
+            <span class="gist">Expected Spring 2028. A deeper understanding of every energy source and the data science behind them.</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <p><strong>Focus areas</strong></p>
+          <ul>
+            <li>Energy data science</li>
+            <li>Renewable and alternative energy</li>
+            <li>Portfolio management</li>
+            <li>Energy policy and law</li>
+          </ul>
+          <p style="margin-top:12px">Already working where gas and electric meet: modeling pipelines that share right-of-way with power transmission lines.</p>
+        </div>
+      </details>
+    </div>
+
+  </div>
+
+  <section class="contact" aria-label="Contact">
+    <a class="btn" href="mailto:draperdrpr@outlook.com">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      Email Cody
+    </a>
+    <p class="aga">American Gas Association: Distribution and Transmission Integrity Management, plus the Regulatory Action and Operational Risk Data committees.</p>
+  </section>
+</main>
+</body>
+</html>
